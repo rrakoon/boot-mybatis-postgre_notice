@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.5//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace => mapper interfaace 경로 -->
+<mapper namespace="com.project.notice_mybatis.mapper.BoardMapper">
+    <sql id="boardColumns">
+        idx
+        , title
+		, content
+		, writer
+		, view_cnt
+		, notice_yn
+		, secret_yn
+		, delete_yn
+		, insert_time
+		, update_time
+		, delete_time
+    </sql>
+
+    <!--parameterType => -->
+    <insert id="insertBoard" parameterType="BoardDTO">
+        INSERT INTO tb_board (
+        <include refid="boardColumns"/>
+        ) VALUES (
+        /* #{idx}*/
+        default /*postgresql serial == mysql auto increment*/
+        , #{title}
+        , #{content}
+        , #{writer}
+        , 0
+        , coalesce(cast(#{noticeYn} as enum), 'N') /*mysql의 enum(여러값중 허용된값만 저장가능) */
+        , coalesce(cast(#{secretYn} as enum), 'N') /*mysql ifnull == postgresql coalesce*/
+        , 'N'
+        , NOW()
+        , NULL
+        , NULL
+        )
+    </insert>
+
+    <!--resultType => 쿼리결과 매핑할 타입지정. -->
+    <!--factoryBean.setTypeAliasesPackage에 domain경로를 지정해두어 DTO부분만 사용.
+        원본 : com.project.notice_mybatis.domain.BoardDTO -->
+    <!--mybatis에선 파라미터 표현식으로 #{}를 사용.-->
+    <select id="selectBoardDetail" parameterType="long" resultType="BoardDTO">
+        SELECT
+        <include refid="boardColumns"/>
+        FROM
+        tb_board
+        WHERE
+        delete_yn = 'N'
+        AND
+        idx = #{idx}
+    </select>
+
+    <update id="updateBoard" parameterType="BoardDTO">
+        UPDATE tb_board
+        SET update_time = NOW()
+          , title       = #{title}
+          , content     = #{content}
+          , writer      = #{writer}
+          , notice_yn   = coalesce(#{noticeYn}, 'N')
+          , secret_yn   = coalesce(#{secretYn}, 'N')
+        WHERE idx = #{idx}
+    </update>
+
+    <update id="deleteBoard" parameterType="long">
+        UPDATE tb_board
+        SET delete_yn   = 'Y'
+          , delete_time = NOW()
+        WHERE idx = #{idx}
+    </update>
+
+    <select id="selectBoardList" parameterType="BoardDTO" resultType="BoardDTO">
+        SELECT
+        <include refid="boardColumns"/>
+        FROM
+        tb_board
+        WHERE
+        delete_yn = 'N'
+        ORDER BY
+        notice_yn ASC,
+        idx DESC,
+        insert_time DESC
+    </select>
+
+    <select id="selectBoardTotalCount" parameterType="BoardDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_board
+        WHERE delete_yn = 'N'
+    </select>
+
+</mapper>
