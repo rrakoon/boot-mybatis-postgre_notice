@@ -1,0 +1,32 @@
+create type enum as ENUM('Y','N');
+drop type enum cascade;
+
+drop table tb_board;
+
+create table tb_board(
+	idx serial primary key,
+	title varchar(100) not null,
+	content varchar(3000),
+	writer varchar(30) not null,
+	view_cnt integer not null default 0,
+	notice_yn enum not null default 'N' ,
+	secret_yn enum not null default 'N',
+	delete_yn enum not null default 'N' ,
+	insert_time timestamp with time zone not null default current_timestamp,
+	update_time timestamp with time zone,
+	delete_time timestamp with time zone 
+);
+
+
+comment on table tb_board is '게시판';
+comment on column tb_board.idx is '번호';
+comment on column tb_board.title is '제목';
+comment on column tb_board.content is '내용';
+comment on column tb_board.writer is '작성자';
+comment on column tb_board.view_cnt is '조회수';
+comment on column tb_board.notice_yn is '공지글 여부';
+comment on column tb_board.secret_yn is '비밀글 여부';
+comment on column tb_board.delete_yn is '삭제 여부';
+comment on column tb_board.insert_time is '등록일';
+comment on column tb_board.update_time is '수정일';
+comment on column tb_board.delete_time is '삭제일';
