@@ -31,7 +31,8 @@
         , coalesce(cast(#{noticeYn} as enum), 'N') /*mysql의 enum(여러값중 허용된값만 저장가능) */
         , coalesce(cast(#{secretYn} as enum), 'N') /*mysql ifnull == postgresql coalesce*/
         , 'N'
-        , NOW()
+        /*, now()*  mysql */
+        , current_timestamp /* postgresql */
         , NULL
         , NULL
         )
@@ -58,8 +59,8 @@
           , title       = #{title}
           , content     = #{content}
           , writer      = #{writer}
-          , notice_yn   = coalesce(#{noticeYn}, 'N')
-          , secret_yn   = coalesce(#{secretYn}, 'N')
+          , notice_yn   = coalesce(cast(#{noticeYn} as enum), 'N')
+          , secret_yn   = coalesce(casT(#{secretYn} as enum), 'N')
         WHERE idx = #{idx}
     </update>
 
