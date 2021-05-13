@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="board/layout/basic">
+<!--
+    xmlns:th : 타임리프 th 속성 사용 선언문.
+    xmlns:layout : 타임리프 layout 기능 사용 선언문.
+    layout:decorator="경로" : 레이아웃으로 사용할 html 경로
+-->
+
+
+<!--&lt;!&ndash;th:replace : JSP <%@include%> 와 유사 태그로 :: fragment name을 찾아 치환함. &ndash;&gt;-->
+<!--<head th:replace="board/fragment/header :: main-head"></head>-->
+<!--<body th:replace="board/fragment/body :: main-body"></body>-->
+
+<!--
+    th:block layout:fragment -> 페이지지 마다 동적으로 처리가능.
+-->
+<th:block layout:fragment="title">
+    <title>WritePage</title>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="card-content">
+        <!--
+            th:action = "" : <input>, <textarea> 등 사용자 입력(선택)필드의 name 속성 값 기준으로
+            uri와 매핑된 컨트롤러 매서드로 폼 데이터(파라미터)전달.
+
+            onsubmit = "" : 폼 데이터 컨트롤러로 전송전 폼 데이터 유효성 검사 사용 이벤트.
+                            함수명 앞에 return은 JavaScript 이벤트가 기본적으로 return true성향때문.
+                            return 미 선언시 함수실행을 하지 않고 바로 컨트롤러 호출.
+
+           th:object : Controller -> View로 전달한 객체(model.addAttribute). JSTL <c:forEach items = "${board}> 같은.
+                        th:field를 이용해서 HTML 태그에 멤버 변수 매핑 가능.
+                        Controller에서 특정 클래스 객체를 전달 받은 경우만 사용가능.
+
+           th:field : 입력(선택)필드 등 id, name, value 속성값이 자동 매핑되므로 각 속성을 따로 지정할 필요x
+                      *{}표현식으로 사용한다.
+
+           th:checked : 체크박스속성.
+        -->
+        <form class="form-horizontal" th:action="@{/board/register}" th:object="${board}" method="post"
+              onsubmit="return registerBoard(this)">
+            <!--/* update의 경우 서버로 전달할 게시글 번호 (PK) */-->
+            <input type="hidden" th:if="*{idx != null and idx > 0}" th:field="*{idx}"/>
+
+            <div class="form-group">
+                <label for="noticeYn" class="col-sm-2 control-label">공지글 설정</label>
+                <div class="col-sm-10" style="margin-top: 10px;">
+                    <input type="checkbox" th:value="*{noticeYn}" id="noticeYn" name="noticeYn"
+                           th:checked="*{#strings.equals( noticeYn, 'Y' )}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="secretYn" class="col-sm-2 control-label">비밀글 설정</label>
+                <div class="col-sm-10" style="margin-top: 10px;">
+                    <input type="checkbox" th:value="*{secretYn}" id="secretYn" name="secretYn"
+                           th:checked="*{#strings.equals( secretYn, 'Y' )}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">제목</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력해 주세요."/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="writer" class="col-sm-2 control-label">이름</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{writer}" class="form-control" placeholder="이름을 입력해 주세요."/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="content" class="col-sm-2 control-label">내용</label>
+                <div class="col-sm-10">
+                    <textarea th:field="*{content}" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
+                </div>
+            </div>
+
+            <div class="btn_wrap text-center">
+                <a th:href="@{/board/list}" class="btn btn-default waves-effect waves-light">뒤로가기</a>
+                <button type="submit" class="btn btn-primary waves-effect waves-light">저장하기</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.card-content -->
+</th:block>
+
+<!--
+    th:inline="javascript" : HTML script 태그에 속성을 javascript 지정해야 사용가능.
+    <![CDATA[]> : 타임리프는 < , > 를 잘걸러내서 javascript는 CDATA로 묶는다 생각하면됨.
+
+-->
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        function registerBoard(form) {
+
+            form.noticeYn.value = form.noticeYn.checked == false ? 'N' : 'Y';
+            form.secretYn.value = form.secretYn.checked == false ? 'N' : 'Y';
+
+            var result = (
+                isValid(form.title, "제목", null, null)
+                && isValid(form.writer, "이름", null, null)
+                && isValid(form.content, "내용", null, null)
+            );
+
+            if (result == false) {
+                return false;
+            }
+        }
+
+        /*[- end of function -]*/
+
+        /*]]>*/
+    </script>
+</th:block>
+
+</html>

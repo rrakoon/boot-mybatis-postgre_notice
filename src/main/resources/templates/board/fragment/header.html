@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!--th:fragement : 다른 html에서 include or replace 속성 적용 가능.-->
+<head th:fragment="main-head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--th:block : layout:fragment속성에 이름을 지정해 실제 Content 페이지의 내용을 채우는 기능. 동적처리가 필요할떄 사용.-->
+    <th:block layout:fragment="title"></th:block>
+
+    <!--th:href : <a> href, JSTL <c:url> 태그와 동일하게 Webapp을 구분하는 context path를 포함.
+    application.properties에서 context Path 경로 변경가능-->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}"/>
+
+    <th:block layout:fragment="add-css"></th:block>
+</head>
+<body>
+
+</body>
+</html>
