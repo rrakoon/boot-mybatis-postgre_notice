@@ -35,13 +35,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean deleteBoard(Long idx) {
         int queryResult = 0;
-
         BoardDTO board = boardMapper.selectBoardDetail(idx);
-
         if (board != null && "N".equals(board.getDeleteYn())) {
             queryResult = boardMapper.deleteBoard(idx);
         }
-
         return (queryResult == 1) ? true : false;
     }
 

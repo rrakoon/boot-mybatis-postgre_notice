@@ -33,7 +33,6 @@ public class BoardController {
             }
             model.addAttribute("board", board);
         }
-
         return "board/write";
     }
 
@@ -46,11 +45,9 @@ public class BoardController {
             }
         } catch (DataAccessException e) {
             //TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-
         } catch (Exception e) {
             //TODO => 시스템에 문제가 발생하였다는 메시지를 전달
         }
-
         return "redirect:/board/list";
     }
 
