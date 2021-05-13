@@ -17,22 +17,29 @@
 		, delete_time
     </sql>
 
-    <!--parameterType => -->
+    <!--
+        mysql enum(여러값중 허용값만 저장가능), postgresql은 enum type이 없어 따로 타입을 생성해줘야됨.
+        mysql ifnull / oracle nvl / postgresql coalesce
+    -->
+    <!--
+        postgresql sequence auto increment 라 default로 둠
+        mysql의 경우 default => #{idx}로 변경하면됨.
+        postgresql : coalesce(cast(#{noticeYn} as enum), 'N') - enum type이 기본 데이터타입이 아니라 형변환 해줘야됨.
+        mysql : ifnull(#{noticeYn},'N')
+    -->
     <insert id="insertBoard" parameterType="BoardDTO">
         INSERT INTO tb_board (
-        <include refid="boardColumns"/>
+        <include refid="boardColumns" />
         ) VALUES (
-        /* #{idx}*/
-        default /*postgresql serial == mysql auto increment*/
+        default
         , #{title}
         , #{content}
         , #{writer}
         , 0
-        , coalesce(cast(#{noticeYn} as enum), 'N') /*mysql의 enum(여러값중 허용된값만 저장가능) */
-        , coalesce(cast(#{secretYn} as enum), 'N') /*mysql ifnull == postgresql coalesce*/
+        , coalesce(cast(#{noticeYn} as enum), 'N')
+        , coalesce(cast(#{secretYn} as enum), 'N')
         , 'N'
-        /*, now()*  mysql */
-        , current_timestamp /* postgresql */
+        , NOW()
         , NULL
         , NULL
         )

@@ -22,9 +22,10 @@ public class MapperTest {
         params.setTitle("1번 게시글 제목");
         params.setContent("1번 게시글 내용");
         params.setWriter("테스터");
-
         int result = boardMapper.insertBoard(params);
+        System.out.println("=========================");
         System.out.println("결과는 " + result + "입니다.");
+        System.out.println("=========================");
     }
 
     @Test
