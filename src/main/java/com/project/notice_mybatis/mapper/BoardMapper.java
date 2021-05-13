@@ -23,7 +23,6 @@ public interface BoardMapper {
     List<BoardDTO> selectBoardList();
     //게시글 갯수
     int selectBoardTotalCount();
-
 }
 
 

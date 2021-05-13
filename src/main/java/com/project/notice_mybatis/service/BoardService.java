@@ -13,5 +13,4 @@ public interface BoardService {
      boolean deleteBoard(Long idx);
 
      List<BoardDTO> getBoardList();
-
 }

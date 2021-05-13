@@ -80,7 +80,6 @@ public class BoardController {
         return "board/view";
     }
 
-
     @PostMapping(value = "/delete")
     public String deleteBoard(@RequestParam(value = "idx", required = false) Long idx) {
         if (idx == null) {
