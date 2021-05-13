@@ -3,7 +3,8 @@ package com.project.notice_mybatis.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.ibatis.type.LocalDateTimeTypeHandler;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -39,12 +40,12 @@ public class BoardDTO {
      LocalDateTime => LcalDateTimeTypeHandler 변경 mybatis 3.5이상시 정상작동.
      */
     /* 등록일 */
-    private LocalDateTimeTypeHandler insertTime;
+    private LocalDateTime insertTime;
 
     /* 수정일 */
-    private LocalDateTimeTypeHandler updateTime;
+    private LocalDateTime updateTime;
 
     /* 삭제일 */
-    private LocalDateTimeTypeHandler deleteTime;
+    private LocalDateTime deleteTime;
 
 }

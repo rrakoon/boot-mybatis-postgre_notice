@@ -23,7 +23,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>번호</th>
+<!--                <th>번호</th>-->
                 <th>제목</th>
                 <th>작성자</th>
                 <th>등록일</th>
@@ -46,7 +46,7 @@
                     <a th:href="@{/board/view( idx=${row.idx} )}" th:text="${row.title}"></a>
                 </td>
                 <td th:text="${row.writer}"></td>
-                <td th:text="${#temporals.format( row.insertTime, 'yyyy-MM-dd hh24:mm' )}"></td>
+                <td th:text="${#temporals.format( row.insertTime, 'yyyy-MM-dd HH:mm' )}"></td>
                 <td th:text="${row.viewCnt}"></td>
             </tr>
             <tr th:unless="${not #lists.isEmpty( boardList )}">

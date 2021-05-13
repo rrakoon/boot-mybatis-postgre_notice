@@ -88,7 +88,7 @@ public class MapperTest {
 
     @Test
     public void testMultipleInsert() {
-        for (int i = 2; i <= 50; i++) {
+        for (int i = 1; i <= 50; i++) {
             BoardDTO params = new BoardDTO();
             params.setTitle(i + "번 게시글 제목");
             params.setContent(i + "번 게시글 내용");
