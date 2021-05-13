@@ -3,19 +3,14 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Title</title>
+<!--
+    xmlns:th : 타임리프 th 속성 사용 선언문.
+    xmlns:layout : 타임리프 layout 기능 사용 선언문.
+    layout:decorator="경로" : 레이아웃으로 사용할 html 경로
+-->
 
-</head>
-
-<body>
-
-
-</body>
+<!--th:replace : JSP <%@include%> 와 유사 태그로 :: fragment name을 찾아 치환함. -->
+<head th:replace="board/fragments/header :: main-head"></head>
+<body th:replace="board/fragments/body :: main-body"></body>
 
 </html>
