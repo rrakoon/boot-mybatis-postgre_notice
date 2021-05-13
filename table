@@ -1,3 +1,4 @@
+//postgresql은 enum type이 없으므로 직접 만들어줘야됨.
 create type enum as ENUM('Y','N');
 drop type enum cascade;
 
@@ -16,7 +17,7 @@ create table tb_board(
 	update_time timestamp with time zone,
 	delete_time timestamp with time zone 
 );
-
+// current_timestamp == now()
 
 comment on table tb_board is '게시판';
 comment on column tb_board.idx is '번호';
