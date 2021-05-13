@@ -33,11 +33,12 @@ public class BoardDTO {
     /* 삭제 여부 */
     private String deleteYn;
 
-    /* 등록일 */
+
     /*
      postgresql timestamp with time zone issue
      LocalDateTime => LcalDateTimeTypeHandler 변경 mybatis 3.5이상시 정상작동.
      */
+    /* 등록일 */
     private LocalDateTimeTypeHandler insertTime;
 
     /* 수정일 */

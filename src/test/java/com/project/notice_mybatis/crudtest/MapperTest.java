@@ -67,6 +67,7 @@ public class MapperTest {
         }
     }
 
+    /* delete N -> Y 다시 확인하려면 idx값을 바꾸던지 N으로 다시 변경해야됨 */
     @Test
     public void testOfDelete() {
         int result = boardMapper.deleteBoard((long) 1);
@@ -95,6 +96,7 @@ public class MapperTest {
             boardMapper.insertBoard(params);
         }
     }
+
 
     @Test
     public void testSelectList() {

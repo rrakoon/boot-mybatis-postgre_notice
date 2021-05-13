@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource("classpath:/application.properties")
 public class DBconfig {
+
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -34,8 +35,8 @@ public class DBconfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource());
-//		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis-mappers/**/*.xml"));
-		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis-mappers/*.xml"));
+		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis-mappers/**/*.xml"));
+//		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis-mappers/*.xml"));
         factoryBean.setTypeAliasesPackage("com.project.notice_mybatis.domain");
         factoryBean.setConfiguration(mybatisConfg());
 		return factoryBean.getObject();

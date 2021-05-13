@@ -9,6 +9,7 @@ import java.util.List;
 //DAO클래스에 @Repository선언으로 DB와 통신하는 클래스를 나타냄
 //Mybatis에서 @Mapper 지정시 XML Mapper와 이름이 같은 SQL문 실행.
 public interface BoardMapper {
+
     //게시글 생성
     int insertBoard(BoardDTO params);
     //게시글 조회
@@ -21,4 +22,5 @@ public interface BoardMapper {
     List<BoardDTO> selectBoardList();
     //게시글 갯수
     int selectBoardTotalCount();
+
 }

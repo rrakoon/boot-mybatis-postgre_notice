@@ -49,6 +49,7 @@
     <!--factoryBean.setTypeAliasesPackage에 domain경로를 지정해두어 DTO부분만 사용.
         원본 : com.project.notice_mybatis.domain.BoardDTO -->
     <!--mybatis에선 파라미터 표현식으로 #{}를 사용.-->
+
     <select id="selectBoardDetail" parameterType="long" resultType="BoardDTO">
         SELECT
         <include refid="boardColumns"/>
