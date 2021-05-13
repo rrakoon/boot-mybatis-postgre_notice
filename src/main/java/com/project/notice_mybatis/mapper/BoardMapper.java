@@ -5,9 +5,10 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
+
 //DAO클래스에 @Repository선언으로 DB와 통신하는 클래스를 나타냄
 //Mybatis에서 @Mapper 지정시 XML Mapper와 이름이 같은 SQL문 실행.
+@Mapper
 public interface BoardMapper {
 
     //게시글 생성
@@ -24,3 +25,5 @@ public interface BoardMapper {
     int selectBoardTotalCount();
 
 }
+
+

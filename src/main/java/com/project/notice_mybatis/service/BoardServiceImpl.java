@@ -42,6 +42,7 @@ public class BoardServiceImpl implements BoardService {
         return (queryResult == 1) ? true : false;
     }
 
+
     @Override
     public List<BoardDTO> getBoardList() {
         List<BoardDTO> boardList = Collections.emptyList();

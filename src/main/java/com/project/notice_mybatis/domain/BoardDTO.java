@@ -35,6 +35,7 @@ public class BoardDTO {
     private String deleteYn;
 
 
+
     /*
      postgresql timestamp with time zone issue
      LocalDateTime => LcalDateTimeTypeHandler 변경 mybatis 3.5이상시 정상작동.
