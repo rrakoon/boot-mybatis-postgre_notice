@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <!-- Appenders -->
+    <!--전달받은 로그 출력할지 결정.-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--출력 로그 형식 지정.-->
+        <encoder>
+            <Pattern>%d %5p [%c] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d %5p %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logger -->
+    <!--로그출력 요소, level속성을 통해 로그레벨 조정.-->
+    <!--
+        log level
+        fatal = 심각
+        error = 요청 처리중 문제 발생
+        warn = 프로그램 실행 문제 x 향후 시스템 에러 원인 경고성 메세지
+        info = 상태변경 등 정보성 메세지
+        debug = 디버그용도로 사용 메세지
+        trace = 디버그 레벨의 범위를 상세 이벤트로 나타냄
+    -->
+    <logger name="com.project.notice_mybatis" level="DEBUG" appender-ref="console" />
+    <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
+    <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
+    <!--
+        log type
+        sqlonly : sql을 로그로 남김. Prepared Statement와 관련 파라미터는 자동변경
+        sqltiming : sql과 sql 실행시간을 ms단위로 출력
+        audit : ResultSet을 제외한 모든 JDBC 호출 정보 출력. 사용권장 x
+        resultset : ResultSet을 포함한 모든 JDBC정보 출력.
+        resultsettable : sql 조회결과를 테이블 형태로 출력.
+        connection : Connection의 연결과 종료에 관한 로그 출력.
+    -->
+
+    <!-- Root Logger -->
+    <root level="off">
+        <appender-ref ref="console" />
+    </root>
+</configuration>
