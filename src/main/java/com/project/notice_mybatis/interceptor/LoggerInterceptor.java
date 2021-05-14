@@ -20,6 +20,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
         logger.debug("===============================================");
         logger.debug("==================== BEGIN ====================");
         logger.debug("Request URI ===> " + request.getRequestURI());
+        logger.debug("===============================================");
 
         return super.preHandle(request, response, handler);
     }
