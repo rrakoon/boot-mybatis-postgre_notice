@@ -1,7 +1,9 @@
 package com.project.notice_mybatis.controller;
 
+import com.project.notice_mybatis.constant.Method;
 import com.project.notice_mybatis.domain.BoardDTO;
 import com.project.notice_mybatis.service.BoardService;
+import com.project.notice_mybatis.util.UiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/board")
-public class BoardController {
+public class BoardController extends UiUtil {
 
     @Autowired
     private BoardService boardService;
@@ -39,26 +41,29 @@ public class BoardController {
     }
 
     @PostMapping(value = "/register")
-    public String registerBoard(final BoardDTO params) {
+    public String registerBoard(final BoardDTO params, Model model) {
         try {
             boolean isRegistered = boardService.registerBoard(params);
             if (isRegistered == false) {
                 // TODO => 게시글 등록에 실패하였다는 메시지를 전달
+                return showMessageWithRedirect("게시글 등록 실패", "/board/list", Method.GET, null, model);
             }
         } catch (DataAccessException e) {
             // TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+            return showMessageWithRedirect("DB 처리 과정 중 문제 발생", "/board/list", Method.GET, null, model);
 
         } catch (Exception e) {
             // TODO => 시스템에 문제가 발생하였다는 메시지를 전달
+            return showMessageWithRedirect("시스템에 문제가 발생하였습니다.", "/board/list", Method.GET, null, model);
         }
 
-        return "redirect:/board/list";
+        return showMessageWithRedirect("게시글 등록 완료", "/board/list", Method.GET, null, model);
     }
 
     @GetMapping("/list")
-    public String openBoardList(Model model){
+    public String openBoardList(Model model) {
         List<BoardDTO> boardDTOList = boardService.getBoardList();
-        model.addAttribute("boardList",boardDTOList);
+        model.addAttribute("boardList", boardDTOList);
 
         return "/board/list";
     }
@@ -81,25 +86,26 @@ public class BoardController {
     }
 
     @PostMapping(value = "/delete")
-    public String deleteBoard(@RequestParam(value = "idx", required = false) Long idx) {
+    public String deleteBoard(@RequestParam(value = "idx", required = false) Long idx, Model model) {
         if (idx == null) {
             // TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
-            return "redirect:/board/list";
+            return showMessageWithRedirect("올바르지 않은 접근입니다.", "/board/list", Method.GET, null, model);
         }
 
         try {
             boolean isDeleted = boardService.deleteBoard(idx);
             if (isDeleted == false) {
                 // TODO => 게시글 삭제에 실패하였다는 메시지를 전달
+                return showMessageWithRedirect("게시글 삭제 실패.", "/board/list", Method.GET, null, model);
             }
         } catch (DataAccessException e) {
             // TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-
+            return showMessageWithRedirect("데이터베이스 처리 과정에 문제가 발생하였습니다.", "/board/list", Method.GET, null, model);
         } catch (Exception e) {
-            // TODO => 시스템에 문제가 발생하였다는 메시지를 전달
+            return showMessageWithRedirect("시스템에 문제가 발생하였습니다.", "/board/list", Method.GET, null, model);
         }
 
-        return "redirect:/board/list";
+        return showMessageWithRedirect("게시글 삭제가 완료되었습니다.", "/board/list", Method.GET, null, model);
     }
 
 }

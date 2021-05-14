@@ -112,8 +112,8 @@
         function deleteBoard(idx) {
 
             if (confirm(idx + "번 게시글을 삭제할까요?")) {
-                var uri = [[ @{/board/delete} ]];
-                var html = "";
+                let uri = [[ @{/board/delete} ]];
+                let html = "";
 
                 html += '<form name="dataForm" action="'+uri+'" method="post">';
                 html += '<input type="hidden" name="idx" value="'+idx+'" />';
