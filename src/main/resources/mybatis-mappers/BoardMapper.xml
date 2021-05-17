@@ -81,27 +81,48 @@
 
     <!--
         mysql에선 limit #{startPage}, #{recodesPerPage}
-        postgresql, oracle offset #{recodesPerPage} limit #{startPage}
+        postgresql offset #{recodesPerPage} limit #{startPage}
         결론 : Limit는 갯수재한, offset은 시작위치 지정.
     -->
-    <select id="selectBoardList" parameterType="Criteria" resultType="BoardDTO">
+<!--    <select id="selectBoardList" parameterType="Criteria" resultType="BoardDTO">-->
+<!--        SELECT-->
+<!--        <include refid="boardColumns"/>-->
+<!--        FROM-->
+<!--        tb_board-->
+<!--        WHERE-->
+<!--        delete_yn = 'N'-->
+<!--        ORDER BY-->
+<!--        notice_yn ASC,-->
+<!--        idx DESC,-->
+<!--        insert_time DESC-->
+<!--        limit #{recordsPerPage} offset #{startPage}-->
+<!--    </select>-->
+
+<!--    <select id="selectBoardTotalCount" parameterType="Criteria" resultType="int">-->
+<!--        SELECT COUNT(*)-->
+<!--        FROM tb_board-->
+<!--        WHERE delete_yn = 'N'-->
+<!--    </select>-->
+    <select id="selectBoardList" parameterType="BoardDTO" resultType="BoardDTO">
         SELECT
         <include refid="boardColumns"/>
         FROM
         tb_board
         WHERE
         delete_yn = 'N'
+        <include refid="CommonMapper.search"/>
         ORDER BY
         notice_yn ASC,
         idx DESC,
         insert_time DESC
-        limit #{recordsPerPage} offset #{startPage}
+        <include refid="CommonMapper.paging"/>
     </select>
 
-    <select id="selectBoardTotalCount" parameterType="Criteria" resultType="int">
+    <select id="selectBoardTotalCount" parameterType="BoardDTO" resultType="int">
         SELECT COUNT(*)
         FROM tb_board
         WHERE delete_yn = 'N'
+        <include refid="CommonMapper.search" />
     </select>
 
 </mapper>

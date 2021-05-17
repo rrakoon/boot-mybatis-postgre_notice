@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.notice_mybatis.domain.BoardDTO;
 import com.project.notice_mybatis.mapper.BoardMapper;
-import com.project.notice_mybatis.paging.Criteria;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -89,7 +88,7 @@ public class MapperTest {
 
     @Test
     public void testMultipleInsert() {
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 200; i++) {
             BoardDTO params = new BoardDTO();
             params.setTitle(i + "번 게시글 제목");
             params.setContent(i + "번 게시글 내용");
@@ -100,10 +99,12 @@ public class MapperTest {
 
 
     @Test
-    public void testSelectList(Criteria criteria) {
-        int boardTotalCount = boardMapper.selectBoardTotalCount(criteria);
+    public void testSelectList(BoardDTO boardDTO) {
+//        int boardTotalCount = boardMapper.selectBoardTotalCount(criteria);
+        int boardTotalCount = boardMapper.selectBoardTotalCount(boardDTO);
         if (boardTotalCount > 0) {
-            List<BoardDTO> boardList = boardMapper.selectBoardList(criteria);
+//            List<BoardDTO> boardList = boardMapper.selectBoardList(criteria);
+            List<BoardDTO> boardList = boardMapper.selectBoardList(boardDTO);
             if (CollectionUtils.isEmpty(boardList) == false) {
                 for (BoardDTO board : boardList) {
                     System.out.println("=========================");

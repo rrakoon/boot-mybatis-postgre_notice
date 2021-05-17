@@ -10,12 +10,7 @@
 </th:block>
 
 <th:block layout:fragment="search">
-    <form action="#" id="searchform-header" class="searchform js__toggle active pull-right">
-        <input type="search" placeholder="Search..." class="input-search">
-        <button class="mdi mdi-magnify button-search" type="submit">
-            <i class="fa fa-search" aria-hidden="true"></i>
-        </button>
-    </form>
+    <div th:replace="board/fragments/common :: search"></div>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -42,8 +37,16 @@
             -->
             <tr th:if="${#lists.isEmpty( boardList ) == false}" th:each="row : ${boardList}">
                 <td scope="row" th:text="${#strings.equals( row.noticeYn, 'Y' ) ? '공지' : row.idx}"></td>
-                <td class="text-left">
+                <!--<td class="text-left">
                     <a th:href="@{/board/view( idx=${row.idx} )}" th:text="${row.title}"></a>
+                </td>-->
+                <!--
+                    타임리프에선 문자열 연결시 문자열을 |로 감싼다. |감쌀문자열|
+                    "'hello,'+${row.writer}" ==  |hello, ${row.writer}|
+                -->
+                <td class="text-left">
+                    <a th:href="|@{/board/view}${params.makeQueryString(params.currentPageNo)}&idx=${row.idx}|"
+                       th:text="${row.title}"></a>
                 </td>
                 <td th:text="${row.writer}"></td>
                 <td th:text="${#temporals.format( row.insertTime, 'yyyy-MM-dd HH:mm' )}"></td>
@@ -60,26 +63,46 @@
         </div>
 
         <th:block layout:fragment="paging">
-            <nav aria-label="Page navigation" class="text-center">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <nva th:replace="board/fragments/common :: pagination"></nva>
         </th:block>
     </div>
 </th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        function movePage(uri, queryString) {
+            location.href = uri + queryString;
+        }
+
+        function searchBoard(form) {
+            /*[- 드롭다운이 아닌 메인 검색 키워드로 검색했을 때 -]*/
+            if (isEmpty(form) == true) {
+                let searchKeyword = document.getElementById("mainSearchKeyword");
+                if (isEmpty(searchKeyword.value) == true) {
+                    alert("키워드를 입력해 주세요.");
+                    searchKeyword.focus();
+                    return false;
+                }
+
+                form = document.getElementById("searchForm");
+                form.searchKeyword.value = searchKeyword.value;
+                form.submit();
+            }
+
+            /*[- 드롭다운으로 검색했을 때-]*/
+            if (isEmpty(form.searchKeyword.value) == true) {
+                alert("키워드를 입력해 주세요.");
+                form.searchKeyword.focus();
+                return false;
+            }
+        }
+
+        /*[- end of function -]*/
+
+        /*]]>*/
+    </script>
+</th:block>
+
 </html>

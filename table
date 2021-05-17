@@ -2,6 +2,20 @@
 create type enum as ENUM('Y','N');
 drop type enum cascade;
 
+//시퀀스 생성.
+create sequence tb_board_idx_seq start 1;
+//    create sequence 시퀀스명
+//    [start with 시작값]
+//    [increment by 증가값]
+//    [minvalue 최소값],[maxvalue 최대값]
+//    [[no]cycle]
+
+//시퀀스 현재값 변경
+select setval('시퀀스명',원하는값);
+
+//시퀀스 초기화
+alter sequence tb_board_idx_seq restart with 1;
+
 drop table tb_board;
 
 create table tb_board(
