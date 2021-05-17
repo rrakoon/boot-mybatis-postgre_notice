@@ -1,6 +1,7 @@
 package com.project.notice_mybatis.mapper;
 
 import com.project.notice_mybatis.domain.BoardDTO;
+import com.project.notice_mybatis.paging.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public interface BoardMapper {
     //게시글 삭제
     int deleteBoard(Long idx);
     //게시글 목록
-    List<BoardDTO> selectBoardList();
+    List<BoardDTO> selectBoardList(Criteria criteria);
     //게시글 갯수
-    int selectBoardTotalCount();
+    int selectBoardTotalCount(Criteria criteria);
 }
 
 

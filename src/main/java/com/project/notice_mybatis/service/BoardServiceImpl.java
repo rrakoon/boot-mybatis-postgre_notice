@@ -2,6 +2,7 @@ package com.project.notice_mybatis.service;
 
 import com.project.notice_mybatis.domain.BoardDTO;
 import com.project.notice_mybatis.mapper.BoardMapper;
+import com.project.notice_mybatis.paging.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,13 +44,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDTO> getBoardList() {
+    public List<BoardDTO> getBoardList(Criteria criteria) {
         List<BoardDTO> boardList = Collections.emptyList();
 
-        int boardTotalCount = boardMapper.selectBoardTotalCount();
+        int boardTotalCount = boardMapper.selectBoardTotalCount(criteria);
 
         if (boardTotalCount > 0) {
-            boardList = boardMapper.selectBoardList();
+            boardList = boardMapper.selectBoardList(criteria);
         }
 
         return boardList;

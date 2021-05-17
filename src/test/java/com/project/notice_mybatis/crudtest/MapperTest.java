@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.notice_mybatis.domain.BoardDTO;
 import com.project.notice_mybatis.mapper.BoardMapper;
+import com.project.notice_mybatis.paging.Criteria;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -99,10 +100,10 @@ public class MapperTest {
 
 
     @Test
-    public void testSelectList() {
-        int boardTotalCount = boardMapper.selectBoardTotalCount();
+    public void testSelectList(Criteria criteria) {
+        int boardTotalCount = boardMapper.selectBoardTotalCount(criteria);
         if (boardTotalCount > 0) {
-            List<BoardDTO> boardList = boardMapper.selectBoardList();
+            List<BoardDTO> boardList = boardMapper.selectBoardList(criteria);
             if (CollectionUtils.isEmpty(boardList) == false) {
                 for (BoardDTO board : boardList) {
                     System.out.println("=========================");

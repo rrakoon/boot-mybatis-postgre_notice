@@ -79,7 +79,12 @@
         WHERE idx = #{idx}
     </update>
 
-    <select id="selectBoardList" parameterType="BoardDTO" resultType="BoardDTO">
+    <!--
+        mysql에선 limit #{startPage}, #{recodesPerPage}
+        postgresql, oracle offset #{recodesPerPage} limit #{startPage}
+        결론 : Limit는 갯수재한, offset은 시작위치 지정.
+    -->
+    <select id="selectBoardList" parameterType="Criteria" resultType="BoardDTO">
         SELECT
         <include refid="boardColumns"/>
         FROM
@@ -90,9 +95,10 @@
         notice_yn ASC,
         idx DESC,
         insert_time DESC
+        limit #{recordsPerPage} offset #{startPage}
     </select>
 
-    <select id="selectBoardTotalCount" parameterType="BoardDTO" resultType="int">
+    <select id="selectBoardTotalCount" parameterType="Criteria" resultType="int">
         SELECT COUNT(*)
         FROM tb_board
         WHERE delete_yn = 'N'

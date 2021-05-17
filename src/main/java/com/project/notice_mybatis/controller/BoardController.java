@@ -2,16 +2,14 @@ package com.project.notice_mybatis.controller;
 
 import com.project.notice_mybatis.constant.Method;
 import com.project.notice_mybatis.domain.BoardDTO;
+import com.project.notice_mybatis.paging.Criteria;
 import com.project.notice_mybatis.service.BoardService;
 import com.project.notice_mybatis.util.UiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -61,8 +59,10 @@ public class BoardController extends UiUtil {
     }
 
     @GetMapping("/list")
-    public String openBoardList(Model model) {
-        List<BoardDTO> boardDTOList = boardService.getBoardList();
+    public String openBoardList(@ModelAttribute("criteria") Criteria criteria, Model model) {
+        //@ModelAttribute : 파라미터로 전달받은 객체를 자동으로 view로 전달.
+        //1:1 매핑파라미터 => @ReqeustParam으로 넘겨받고 Model.addAttribute(key,value)로 view로 전달.
+        List<BoardDTO> boardDTOList = boardService.getBoardList(criteria);
         model.addAttribute("boardList", boardDTOList);
 
         return "/board/list";
