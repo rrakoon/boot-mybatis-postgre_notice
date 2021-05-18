@@ -8,11 +8,9 @@ import com.project.notice_mybatis.adapter.GsonLocalDateTimeAdapter;
 import com.project.notice_mybatis.domain.CommentDTO;
 import com.project.notice_mybatis.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +43,35 @@ public class CommentController {
 
         //JsonArray 객체 리턴않고 JSON 객체에 추가하는 이유
         //JsonArray 객체에 리턴해도되지만 JSON 객체에 담으면 여러타입 데이터를 추가할 수 있기때문에.
+        return jsonObj;
+    }
+
+
+    //comments : 새 댓글, comments/{idx} : 댓글 수정.
+    //RequestMethod.POST/PATCH : HTTP요청 POST/PATCH
+    @RequestMapping(value = { "/comments", "/comments/{idx}" },
+            method = { RequestMethod.POST, RequestMethod.PATCH })
+    public JsonObject registerComment(@PathVariable(value = "idx", required = false) Long idx,
+                                      @RequestBody final CommentDTO params) {
+
+        JsonObject jsonObj = new JsonObject();
+
+        try {
+            //댓글 idx 존재시 수정.
+            if (idx != null) {
+                params.setIdx(idx);
+            }
+
+            boolean isRegistered = commentService.registerComment(params);
+            jsonObj.addProperty("result", isRegistered);
+
+        } catch (DataAccessException e) {
+            jsonObj.addProperty("message", "데이터베이스 처리 과정에 문제가 발생하였습니다.");
+
+        } catch (Exception e) {
+            jsonObj.addProperty("message", "시스템에 문제가 발생하였습니다.");
+        }
+
         return jsonObj;
     }
 

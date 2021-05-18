@@ -71,12 +71,13 @@
 
             <form class="form-horizontal form-view">
                 <div class="input-group margin-bottom-20">
-                    <input type="email" class="form-control" placeholder="">
+                    <input type="text" id="content" class="form-control"/>
                     <div class="input-group-btn">
-                        <button type="button" class="btn waves-effect waves-light"><i class="fa fa-commenting"
-                                                                                      aria-hidden="true"></i></button>
+                        <button type="button" class="btn waves-effect waves-light"
+                                th:onclick="insertComment([[ ${board.idx} ]])">
+                            <i class="fa fa-commenting" aria-hidden="true"></i>
+                        </button>
                     </div>
-                    <!-- /.input-group-btn -->
                 </div>
                 <ul class="notice-list"></ul>
             </form>
@@ -153,6 +154,47 @@
                     $(".notice-list").html(commentsHtml);
                 }
             }, "json");
+        }
+
+        function insertComment(boardIdx) {
+            let content = document.getElementById("content"); //jquery $('#content')
+            if (isEmpty(content.value) == true) {
+                content.setAttribute("placeholer", "댓글을 입력해 주세요.");
+                content.focus();
+                return false;
+            }
+
+            let uri = /*[[@{/comments}]]*/;
+            //X-HTTP-Method-Override : REST 방식 HTTP 요청메서드중 PUT, PATCH, DELETE 방식은 브라우저에 따라 지원 안하는경우가 있음.
+            //브라우저에 POST방식으로 데이터 전송 후(ajax type) 해당 속성을 header에 지정해서 REST 방식의 HTTP 요청 메서드를 전송.
+            // X-HTTP-Method-Override : "PUT/PATCH/DELETE"
+            let headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "POST"};
+            let params = {"boardIdx": boardIdx, "content": content.value, "writer": "관리자"};
+
+            $.ajax({
+                url: uri, //호출할 url 지정
+                type: "POST", //HTTP 요청 메서드 지정
+                headers: headers, //HTTP 요청 헤더 지정
+                dataType: "json", //서버로부터 응답받을 데이터타입(text,html,xml,json,script ...)
+                data: JSON.stringify(params), //서버에 전송할 데이터 지정. JSON.stringify : JSON => String convert
+                success: function (response) { //요청 성공시 callback
+                    if (response.result == false) {
+                        alert("댓글 등록에 실패하였습니다.");
+                        return false;
+                    }
+
+                    printCommentList();
+                    content.value = "";
+                },
+                error: function (xhr, status, error) { //실패 callback
+                    alert("에러가 발생하였습니다.");
+                    return false;
+                }
+
+
+            });
+
+
         }
 
 
