@@ -57,13 +57,31 @@ public class CommentController {
         JsonObject jsonObj = new JsonObject();
 
         try {
-            //댓글 idx 존재시 수정.
-            if (idx != null) {
-                params.setIdx(idx);
-            }
+//            //댓글 idx 존재시 수정.
+//            if (idx != null) {
+//                params.setIdx(idx);
+//            }
 
             boolean isRegistered = commentService.registerComment(params);
             jsonObj.addProperty("result", isRegistered);
+
+        } catch (DataAccessException e) {
+            jsonObj.addProperty("message", "데이터베이스 처리 과정에 문제가 발생하였습니다.");
+
+        } catch (Exception e) {
+            jsonObj.addProperty("message", "시스템에 문제가 발생하였습니다.");
+        }
+
+        return jsonObj;
+    }
+
+    @DeleteMapping("/comments/{idx}")
+    public JsonObject deleteComment(@PathVariable("idx") final Long idx){
+        JsonObject jsonObj = new JsonObject();
+
+        try {
+            boolean isDeleted = commentService.deleteComment(idx);
+            jsonObj.addProperty("result", isDeleted);
 
         } catch (DataAccessException e) {
             jsonObj.addProperty("message", "데이터베이스 처리 과정에 문제가 발생하였습니다.");
