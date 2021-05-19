@@ -62,4 +62,11 @@ public class BoardServiceImpl implements BoardService {
 
         return boardList;
     }
+
+    @Override
+    public boolean viewCount(Long idx) {
+        return boardMapper.viewCount(idx);
+    }
+
+
 }

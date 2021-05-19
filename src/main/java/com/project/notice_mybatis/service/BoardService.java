@@ -14,4 +14,6 @@ public interface BoardService {
 
 //     List<BoardDTO> getBoardList(Criteria criteria);
      List<BoardDTO> getBoardList(BoardDTO params);
+
+     boolean viewCount(Long idx);
 }

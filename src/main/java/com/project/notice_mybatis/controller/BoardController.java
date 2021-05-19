@@ -95,6 +95,7 @@ public class BoardController extends UiUtil {
                     "/board/list", Method.GET, null, model);
         }
         model.addAttribute("board", board);
+        boardService.viewCount(idx);
 
         return "board/view";
     }

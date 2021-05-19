@@ -25,6 +25,8 @@ public interface BoardMapper {
     //게시글 갯수
 //    int selectBoardTotalCount(Criteria criteria);
     int selectBoardTotalCount(BoardDTO params);
+
+    boolean viewCount(Long idx);
 }
 
 

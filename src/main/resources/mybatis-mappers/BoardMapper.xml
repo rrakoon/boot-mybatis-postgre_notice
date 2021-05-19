@@ -125,4 +125,10 @@
         <include refid="CommonMapper.search" />
     </select>
 
+    <update id="viewCount" parameterType="long">
+        update tb_board
+        set view_cnt = view_cnt+1
+        where idx = #{idx}
+    </update>
+
 </mapper>
