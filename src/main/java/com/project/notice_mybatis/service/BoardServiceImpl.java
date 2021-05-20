@@ -1,10 +1,15 @@
 package com.project.notice_mybatis.service;
 
+import com.project.notice_mybatis.domain.AttachDTO;
 import com.project.notice_mybatis.domain.BoardDTO;
+import com.project.notice_mybatis.mapper.AttachMapper;
 import com.project.notice_mybatis.mapper.BoardMapper;
 import com.project.notice_mybatis.paging.PaginationInfo;
+import com.project.notice_mybatis.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +19,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardMapper boardMapper;
+
+    @Autowired
+    private AttachMapper attachMapper;
+
+    @Autowired
+    private FileUtil fileUtil;
 
     @Override
     public boolean registerBoard(BoardDTO params) {
@@ -26,6 +37,25 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return (queryResult == 1) ? true : false;
+    }
+
+    @Override
+    public boolean registerBoard(BoardDTO params, MultipartFile[] files) {
+        int queryResult = 1;
+
+        if (registerBoard(params) == false) {
+            return false;
+        }
+
+        List<AttachDTO> fileList = fileUtil.uploadFiles(files, params.getIdx());
+        if (CollectionUtils.isEmpty(fileList) == false) {
+            queryResult = attachMapper.insertAttach(fileList);
+            if (queryResult < 1) {
+                queryResult = 0;
+            }
+        }
+
+        return (queryResult > 0);
     }
 
     @Override

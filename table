@@ -69,3 +69,25 @@ comment on column tb_comment.delete_yn is '삭제여부';
 comment on column tb_comment.insert_time is '등록일';
 comment on column tb_comment.update_time is '수정일';
 comment on column tb_comment.delete_time is '삭제일';
+
+//첨부파일
+create table tb_attach(
+	idx serial primary key,
+	board_idx int not null references tb_board(idx),
+	original_name varchar(300) not null,
+	save_name varchar(300) not null,
+	size int not null,
+	delete_yn enum not null default 'N',
+	insert_time timestamp without time zone default now(),
+	delete_time timestamp without time zone
+);
+
+comment on table tb_attach is '첨부파일';
+comment on column tb_attach.idx is '파일번호(PK)';
+comment on column tb_attach.board_idx is '게시글 번호(FK)';
+comment on column tb_attach.save_name is '저장 파일명';
+comment on column tb_attach.original_name is '원본 파일명';
+comment on column tb_attach.size is '파일 크기';
+comment on column tb_attach.delete_yn is '삭제여부';
+comment on column tb_attach.insert_time is '등록일';
+comment on column tb_attach.delete_time is '삭제일';

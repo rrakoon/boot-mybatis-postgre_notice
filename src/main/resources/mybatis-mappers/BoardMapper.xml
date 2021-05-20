@@ -27,7 +27,7 @@
         postgresql : coalesce(cast(#{noticeYn} as enum), 'N') - enum type이 기본 데이터타입이 아니라 형변환 해줘야됨.
         mysql : ifnull(#{noticeYn},'N')
     -->
-    <insert id="insertBoard" parameterType="BoardDTO">
+    <insert id="insertBoard" parameterType="BoardDTO" useGeneratedKeys="true" keyProperty="idx">
         INSERT INTO tb_board (
         <include refid="boardColumns" />
         ) VALUES (

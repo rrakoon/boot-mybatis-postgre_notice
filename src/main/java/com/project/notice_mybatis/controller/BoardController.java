@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -42,11 +43,11 @@ public class BoardController extends UiUtil {
     }
 
     @PostMapping(value = "/register")
-    public String registerBoard(@ModelAttribute("params") final BoardDTO params, Model model) {
+    public String registerBoard(@ModelAttribute("params") final BoardDTO params, final MultipartFile[] files, Model model) {
         Map<String,Object> pagingParams = getPagingParams(params);
 
         try {
-            boolean isRegistered = boardService.registerBoard(params);
+            boolean isRegistered = boardService.registerBoard(params,files);
             if (isRegistered == false) {
                 // TODO => 게시글 등록에 실패하였다는 메시지를 전달
                 return showMessageWithRedirect("게시글 등록 실패",
