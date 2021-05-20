@@ -34,9 +34,18 @@ public class BoardServiceImpl implements BoardService {
             queryResult = boardMapper.insertBoard(params);
         } else {
             queryResult = boardMapper.updateBoard(params);
+            // 파일이 추가, 삭제, 변경된 경우
+            if ("Y".equals(params.getChangeYn())) {
+                attachMapper.deleteAttach(params.getIdx());
+
+                // fileIdxs에 포함된 idx를 가지는 파일의 삭제여부를 'N'으로 업데이트
+                if (CollectionUtils.isEmpty(params.getFileIdxs()) == false) {
+                    attachMapper.undeleteAttach(params.getFileIdxs());
+                }
+            }
         }
 
-        return (queryResult == 1) ? true : false;
+        return (queryResult > 0);
     }
 
     @Override
@@ -96,6 +105,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean viewCount(Long idx) {
         return boardMapper.viewCount(idx);
+    }
+
+    @Override
+    public List<AttachDTO> getAttachFileList(Long boardIdx) {
+
+        int fileTotalCount = attachMapper.selectAttachTotalCount(boardIdx);
+        if (fileTotalCount < 1) {
+            return Collections.emptyList();
+        }
+        return attachMapper.selectAttachList(boardIdx);
     }
 
 

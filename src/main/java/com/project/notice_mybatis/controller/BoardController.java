@@ -1,6 +1,7 @@
 package com.project.notice_mybatis.controller;
 
 import com.project.notice_mybatis.constant.Method;
+import com.project.notice_mybatis.domain.AttachDTO;
 import com.project.notice_mybatis.domain.BoardDTO;
 import com.project.notice_mybatis.service.BoardService;
 import com.project.notice_mybatis.utils.UiUtil;
@@ -38,6 +39,9 @@ public class BoardController extends UiUtil {
                         "/board/list", Method.GET, null, model);
             }
             model.addAttribute("board", board);
+
+            List<AttachDTO> fileList = boardService.getAttachFileList(idx);
+            model.addAttribute("fileList", fileList);
         }
         return "board/write";
     }
