@@ -5,7 +5,7 @@ import com.project.notice_mybatis.domain.BoardDTO;
 import com.project.notice_mybatis.mapper.AttachMapper;
 import com.project.notice_mybatis.mapper.BoardMapper;
 import com.project.notice_mybatis.paging.PaginationInfo;
-import com.project.notice_mybatis.utils.FileUtil;
+import com.project.notice_mybatis.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,7 +24,7 @@ public class BoardServiceImpl implements BoardService {
     private AttachMapper attachMapper;
 
     @Autowired
-    private FileUtil fileUtil;
+    private FileUtils fileUtils;
 
     @Override
     public boolean registerBoard(BoardDTO params) {
@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
             return false;
         }
 
-        List<AttachDTO> fileList = fileUtil.uploadFiles(files, params.getIdx());
+        List<AttachDTO> fileList = fileUtils.uploadFiles(files, params.getIdx());
         if (CollectionUtils.isEmpty(fileList) == false) {
             queryResult = attachMapper.insertAttach(fileList);
             if (queryResult < 1) {
@@ -115,6 +115,11 @@ public class BoardServiceImpl implements BoardService {
             return Collections.emptyList();
         }
         return attachMapper.selectAttachList(boardIdx);
+    }
+
+    @Override
+    public AttachDTO getAttachDetail(Long idx) {
+        return attachMapper.selectAttachDetail(idx);
     }
 
 

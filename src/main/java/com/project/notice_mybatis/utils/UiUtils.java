@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Controller
-public class UiUtil {
+public class UiUtils {
     public String showMessageWithRedirect(@RequestParam(value = "message", required = false) String message,
                                           @RequestParam(value = "redirectUri", required = false) String redirectUri,
                                           @RequestParam(value = "method", required = false) Method method,

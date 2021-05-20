@@ -9,19 +9,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Component
-public class FileUtil {
+public class FileUtils {
     /**
      * 오늘 날짜
      */
-//    private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    private final String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm"));
+    private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 
     /**

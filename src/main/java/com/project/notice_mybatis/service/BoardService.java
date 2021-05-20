@@ -23,4 +23,6 @@ public interface BoardService {
 
      List<AttachDTO> getAttachFileList(Long boardIdx);
 
+     AttachDTO getAttachDetail(Long idx);
+
 }
